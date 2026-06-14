@@ -1,38 +1,31 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNDERTALE BLOG</title>
+    <title>Undertale Blog</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Cursor do Menu -->
-    <div id="heart"></div>
-
-    <!-- Cabeçalho -->
     <header>
         <h1>UNDERTALE BLOG</h1>
     </header>
 
-    <!-- Menu -->
     <nav id="menu">
-        <div class="opcao selecionada">HOME</div>
+        <div id="heart">❤️</div>
+
+        <div class="opcao">HOME</div>
         <div class="opcao">BLOG</div>
         <div class="opcao">LINKS</div>
         <div class="opcao">PERFIL</div>
         <div class="opcao">SOBRE</div>
     </nav>
 
-    <!-- Caixa de diálogo -->
-    <section id="dialogo-box">
+    <div id="dialogo-box">
         <p id="dialogo"></p>
-    </section>
-
-    <!-- Conteúdo -->
+    </div>
 
     <!-- HOME -->
     <section id="home" class="pagina ativa">
@@ -40,11 +33,11 @@
             <h2>Bem-vindo</h2>
 
             <p>
-                Você entrou no site do Miguel.
+                * Você entrou no site do Miguel.
             </p>
 
             <p>
-                Explore usando as setas do teclado.
+                * Use ← → e ENTER para navegar.
             </p>
         </div>
     </section>
@@ -57,13 +50,12 @@
             <h2>Blog</h2>
 
             <input
-                type="text"
                 id="titulo"
                 placeholder="Título do post">
 
             <textarea
                 id="texto"
-                placeholder="Escreva seu post aqui..."></textarea>
+                placeholder="Escreva aqui..."></textarea>
 
             <button onclick="publicarPost()">
                 PUBLICAR
@@ -85,19 +77,21 @@
 
             <h2>Links</h2>
 
-            <a
+            <p>
+                <a
                 href="https://discord.gg/N8xzQXeKY"
                 target="_blank">
                 Discord
-            </a>
+                </a>
+            </p>
 
-            <br><br>
-
-            <a
+            <p>
+                <a
                 href="https://youtube.com/@MiguelDoPastel"
                 target="_blank">
                 YouTube
-            </a>
+                </a>
+            </p>
 
         </div>
 
@@ -110,9 +104,9 @@
 
             <h2>Perfil</h2>
 
-            <div id="avatar"></div>
-
-            <h3>Miguel</h3>
+            <p>
+                Miguel
+            </p>
 
             <p>
                 Criador do site.
@@ -149,4 +143,3 @@
 
 </body>
 </html>
-```
