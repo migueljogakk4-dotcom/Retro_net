@@ -8,16 +8,15 @@
 
 <title>Blog - RETRO NET</title>
 
-<link rel="stylesheet" href="css/style.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -25,13 +24,12 @@
 RETRO NET
 </div>
 
+
 <nav>
 
 <a href="index.html">HOME</a>
 
 <a href="blog.html">BLOG</a>
-
-<a href="chat.html">MESSENGER</a>
 
 <a href="perfil.html">PERFIL</a>
 
@@ -41,36 +39,102 @@ RETRO NET
 
 </header>
 
+
+
 <main class="hero">
 
-<h1>BLOG</h1>
+
+<h1>
+BLOG
+</h1>
+
 
 <p>
-Últimas postagens da comunidade.
+Posts da comunidade RETRO NET
 </p>
+
+
+
+<!-- ÁREA DO USUÁRIO -->
+
+<div id="userArea">
+
+</div>
+
+
+
+<br>
+
+
+
+<!-- CRIADOR DE POSTS -->
+
+<div id="postEditor" class="card">
+
+
+<h2>
+NOVO POST
+</h2>
+
+
+<input
+
+id="postTitle"
+
+placeholder="Título do post">
+
 
 <br><br>
 
+
+<textarea
+
+id="postText"
+
+placeholder="Escreva seu post..."
+
+rows="6">
+
+</textarea>
+
+
+<br><br>
+
+
+<button onclick="createPost()">
+
+PUBLICAR
+
+</button>
+
+
+</div>
+
+
+
+<br><br>
+
+
+
+<!-- POSTS -->
+
 <div id="posts">
+
 
 <div class="card">
 
-<h2>Bem-vindo!</h2>
-
-<p>
-Quando conectarmos o Firebase,
-os posts aparecerão aqui automaticamente.
-</p>
-
-<p>
-Publicado por: Sistema
-</p>
+Carregando posts...
 
 </div>
 
+
 </div>
+
+
 
 </main>
+
+
 
 <footer>
 
@@ -78,8 +142,10 @@ RETRO NET © 2026
 
 </footer>
 
-<script src="js/app.js"></script>
-<script src="js/blog.js"></script>
+
+
+<script src="app.js"></script>
+
 
 </body>
 
