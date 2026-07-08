@@ -102,12 +102,12 @@ function login(){
     const password =
     document.getElementById("password").value;
 
+const user = users.find(u =>
 
-    const user = users.find(u =>
+    u.username.trim() === username.trim() &&
+    u.password.trim() === password.trim()
 
-        u.username === username &&
-        u.password === password
-
+);
     );
 
 
