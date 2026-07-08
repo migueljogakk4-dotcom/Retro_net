@@ -1,7 +1,17 @@
 [
     {
-        "username":"Miguel",
-        "password":"1234",
-        "bio":"Lol, UT/DR fan"
+        "username": "ProblematicKid2702",
+        "password": "2702",
+        "bio": "Fan de UTDR",
+        "avatar": "default.png",
+        "admin": true
+    },
+
+    {
+        "username": "Convidado",
+        "password": "1234",
+        "bio": "Novo membro da RETRO NET",
+        "avatar": "default.png",
+        "admin": false
     }
 ]
