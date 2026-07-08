@@ -566,3 +566,210 @@ document.addEventListener(
 }
 
 );
+
+/*
+================================================
+RETRO NET
+PERFIL SYSTEM
+Parte 3
+================================================
+*/
+
+
+// ================================
+// PEGAR PERFIL
+// ================================
+
+function getCurrentProfile(){
+
+    if(!currentUser){
+
+        return null;
+
+    }
+
+
+    return currentUser;
+
+}
+
+
+
+// ================================
+// MOSTRAR PERFIL
+// ================================
+
+function showProfile(){
+
+
+    const area =
+
+    document.getElementById(
+        "profile"
+    );
+
+
+    if(!area)return;
+
+
+
+    if(!currentUser){
+
+
+        area.innerHTML = `
+
+        <div class="card">
+
+        Você não está logado.
+
+        </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    area.innerHTML = `
+
+    <div class="card">
+
+
+    <h2>
+
+    ${currentUser.username}
+
+    </h2>
+
+
+    <p>
+
+    ${currentUser.bio || 
+    "Sem descrição."}
+
+    </p>
+
+
+    <button onclick="editBio()">
+
+    Editar bio
+
+    </button>
+
+
+    </div>
+
+    `;
+
+
+}
+
+
+
+// ================================
+// EDITAR BIO
+// ================================
+
+function editBio(){
+
+
+    if(!currentUser)return;
+
+
+
+    const bio = prompt(
+
+        "Digite sua nova bio:",
+
+        currentUser.bio || ""
+
+    );
+
+
+
+    if(bio === null)return;
+
+
+
+    currentUser.bio = bio;
+
+
+
+    localStorage.setItem(
+
+        "retro_session",
+
+        JSON.stringify(currentUser)
+
+    );
+
+
+
+    updateUserList();
+
+
+
+    showProfile();
+
+
+
+}
+
+
+
+// ================================
+// ATUALIZAR USUÁRIO
+// ================================
+
+function updateUserList(){
+
+
+    const index = users.findIndex(
+
+        u =>
+
+        u.username === currentUser.username
+
+    );
+
+
+
+    if(index === -1)return;
+
+
+
+    users[index] = currentUser;
+
+
+
+    localStorage.setItem(
+
+        "retro_users",
+
+        JSON.stringify(users)
+
+    );
+
+
+}
+
+
+
+// ================================
+// INICIAR PERFIL
+// ================================
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
+    showProfile();
+
+
+});
