@@ -773,3 +773,337 @@ document.addEventListener(
 
 
 });
+/*
+================================================
+RETRO NET
+COMMENTS SYSTEM
+Parte 5
+================================================
+*/
+
+
+// ================================
+// CARREGAR COMENTÁRIOS
+// ================================
+
+let comments = JSON.parse(
+
+    localStorage.getItem(
+        "retro_comments"
+    )
+
+) || [];
+
+
+
+// ================================
+// SALVAR COMENTÁRIOS
+// ================================
+
+function saveComments(){
+
+    localStorage.setItem(
+
+        "retro_comments",
+
+        JSON.stringify(comments)
+
+    );
+
+}
+
+
+
+// ================================
+// ADICIONAR COMENTÁRIO
+// ================================
+
+function addComment(postId){
+
+
+    if(!currentUser){
+
+        alert(
+            "Faça login para comentar."
+        );
+
+        return;
+
+    }
+
+
+
+    const input =
+
+    document.getElementById(
+
+        "comment-" + postId
+
+    );
+
+
+
+    if(!input)return;
+
+
+
+    const text = input.value.trim();
+
+
+
+    if(text === ""){
+
+        alert(
+            "Digite um comentário."
+        );
+
+        return;
+
+    }
+
+
+
+    const comment = {
+
+
+        id: Date.now(),
+
+
+        postId: postId,
+
+
+        author:
+        currentUser.username,
+
+
+        text: text,
+
+
+        date:
+        new Date()
+        .toLocaleDateString()
+
+
+    };
+
+
+
+    comments.push(comment);
+
+
+
+    saveComments();
+
+
+
+    input.value = "";
+
+
+
+    showPosts();
+
+
+
+}
+
+
+
+// ================================
+// MOSTRAR COMENTÁRIOS
+// ================================
+
+function showComments(postId){
+
+
+    const postComments =
+
+    comments.filter(
+
+        c => c.postId === postId
+
+    );
+
+
+
+    if(postComments.length === 0){
+
+
+        return `
+
+        <p>
+
+        Nenhum comentário ainda.
+
+        </p>
+
+        `;
+
+
+    }
+
+
+
+    let html = "";
+
+
+
+    postComments.forEach(comment=>{
+
+
+        html += `
+
+        <div class="comment">
+
+
+        <strong>
+
+        ${comment.author}
+
+        </strong>
+
+
+        <p>
+
+        ${comment.text}
+
+        </p>
+
+
+        <small>
+
+        ${comment.date}
+
+        </small>
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+    return html;
+
+
+}
+
+
+
+// ================================
+// ATUALIZAR SHOW POSTS
+// ================================
+
+function showPosts(){
+
+
+    const container =
+
+    document.getElementById(
+
+        "posts"
+
+    );
+
+
+
+    if(!container)return;
+
+
+
+    container.innerHTML="";
+
+
+
+    posts.forEach(post=>{
+
+
+        container.innerHTML += `
+
+
+        <div class="card">
+
+
+        <h2>
+
+        ${post.titulo}
+
+        </h2>
+
+
+
+        <p>
+
+        ${post.texto}
+
+        </p>
+
+
+
+        <small>
+
+        👤 ${post.autor}
+
+        </small>
+
+
+
+        <br><br>
+
+
+
+        <button onclick="likePost(${post.id})">
+
+        ❤️ ${post.likes || 0}
+
+        </button>
+
+
+
+        <hr>
+
+
+
+        <h3>
+
+        Comentários
+
+        </h3>
+
+
+
+        ${showComments(post.id)}
+
+
+
+        <input
+
+        id="comment-${post.id}"
+
+        placeholder="Comentar..."
+
+        >
+
+
+
+        <button onclick="addComment(${post.id})">
+
+        Enviar
+
+        </button>
+
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+}
