@@ -1,270 +1,152 @@
-/*
-================================================
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Blog - RETRO NET</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
 RETRO NET
-BLOG SYSTEM
-Parte 2
-================================================
-*/
+</div>
 
 
-// ================================
-// CRIAR POST
-// ================================
+<nav>
 
-function createPost(){
+<a href="index.html">HOME</a>
 
-    if(!currentUser){
+<a href="blog.html">BLOG</a>
 
-        alert("Faça login primeiro.");
+<a href="perfil.html">PERFIL</a>
 
-        return;
+<a href="login.html">LOGIN</a>
 
-    }
+</nav>
 
+</header>
 
-    const title =
-    document.getElementById("postTitle").value;
 
 
-    const text =
-    document.getElementById("postText").value;
+<main class="hero">
 
 
-    if(title.trim()==="" ||
-       text.trim()===""){
+<h1>
+BLOG
+</h1>
 
-        alert("Preencha tudo.");
 
-        return;
+<p>
+Posts da comunidade RETRO NET
+</p>
 
-    }
 
 
-    const newPost = {
+<!-- ÁREA DO USUÁRIO -->
 
-        id: Date.now(),
+<div id="userArea">
 
-        titulo:title,
+</div>
 
-        texto:text,
 
-        autor:currentUser.username,
 
-        data:new Date().toLocaleDateString(),
+<br>
 
-        likes:0
 
-    };
 
+<!-- CRIADOR DE POSTS -->
 
-    posts.unshift(newPost);
+<div id="postEditor" class="card">
 
 
-    saveLocalPosts();
+<h2>
+NOVO POST
+</h2>
 
 
-    alert("Post criado!");
+<input
 
+id="postTitle"
 
-    showPosts();
+placeholder="Título do post">
 
-}
 
+<br><br>
 
 
-// ================================
-// SALVAR POSTS LOCAIS
-// ================================
+<textarea
 
-function saveLocalPosts(){
+id="postText"
 
-    localStorage.setItem(
+placeholder="Escreva seu post..."
 
-        "retro_posts",
+rows="6">
 
-        JSON.stringify(posts)
+</textarea>
 
-    );
 
-}
+<br><br>
 
 
+<button onclick="createPost()">
 
-// ================================
-// CARREGAR POSTS LOCAIS
-// ================================
+PUBLICAR
 
-function loadLocalPosts(){
+</button>
 
 
-    const saved =
+</div>
 
-    localStorage.getItem(
-        "retro_posts"
-    );
 
 
-    if(saved){
+<br><br>
 
-        posts =
-        JSON.parse(saved);
 
-    }
 
+<!-- POSTS -->
 
-}
+<div id="posts">
 
 
+<div class="card">
 
-// ================================
-// CURTIR POST
-// ================================
+Carregando posts...
 
-function likePost(id){
+</div>
 
 
-    const post = posts.find(
+</div>
 
-        p => p.id === id
 
-    );
 
+</main>
 
-    if(!post)return;
 
 
-    post.likes++;
+<footer>
 
+RETRO NET © 2026
 
-    saveLocalPosts();
+</footer>
 
 
-    showPosts();
 
+<script src="app.js"></script>
 
-}
 
+</body>
 
-
-// ================================
-// MOSTRAR POSTS ATUALIZADO
-// ================================
-
-function showPosts(){
-
-
-    const container =
-
-    document.getElementById(
-        "posts"
-    );
-
-
-    if(!container)return;
-
-
-    container.innerHTML="";
-
-
-    posts.forEach(post=>{
-
-
-        container.innerHTML += `
-
-        <div class="card">
-
-
-            <h2>
-            ${post.titulo}
-            </h2>
-
-
-            <p>
-            ${post.texto}
-            </p>
-
-
-            <small>
-            👤 ${post.autor}
-            <br>
-            📅 ${post.data || ""}
-            </small>
-
-
-            <br><br>
-
-
-            <button onclick="likePost(${post.id})">
-
-            ❤️ ${post.likes || 0}
-
-            </button>
-
-
-        </div>
-
-
-        `;
-
-
-    });
-
-
-}
-
-
-
-// ================================
-// EDITOR DE POST
-// ================================
-
-function openEditor(){
-
-
-    if(!currentUser){
-
-        alert("Entre na conta.");
-
-        return;
-
-    }
-
-
-    const editor =
-
-    document.getElementById(
-        "postEditor"
-    );
-
-
-    if(editor){
-
-        editor.style.display="block";
-
-    }
-
-
-}
-
-
-
-// ================================
-// INICIALIZAÇÃO DO BLOG
-// ================================
-
-document.addEventListener(
-
-"DOMContentLoaded",
-
-()=>{
-
-
-    loadLocalPosts();
-
-
-    showPosts();
-
-
-}
-
-);
+</html>
