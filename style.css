@@ -396,3 +396,36 @@ button:hover{
     color:black;
 
 }
+
+/* ======================
+   COMENTÁRIOS
+====================== */
+
+.comment{
+
+    border:2px solid white;
+
+    padding:10px;
+
+    margin:10px 0;
+
+    background:#111;
+
+}
+
+textarea{
+
+    width:100%;
+
+    background:#111;
+
+    color:white;
+
+    border:3px solid white;
+
+    padding:10px;
+
+    font-family:
+    'Press Start 2P';
+
+}
