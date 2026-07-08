@@ -1,54 +1,57 @@
 /*
-================================================
-RETRO NET
-SUPA.JS
-Conexão com Supabase
-================================================
+=================================================
+ RETRONETT
+ SUPA.JS
+ Sistema Supabase
+=================================================
 */
 
 
-// ================================
-// CONFIGURAÇÃO SUPABASE
-// ================================
+// ===============================
+// CONFIGURAÇÃO
+// ===============================
 
-const supabaseUrl = "https://mecgmhcxwuzcbhbskmdh.supabase.co";
+const supabaseUrl =
+"https://mecgmhcxwuzcbhbskmdh.supabase.co";
 
-const supabaseKey = "COLE_SUA_ANON_KEY_AQUI";
+
+const supabaseKey =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lY2dtaGN4d3V6Y2JoYnNrbWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1NDE3NzUsImV4cCI6MjA5OTExNzc3NX0.WQ8CJBrZNrTOidXPo7FBERrOdyFdJ0ctWD5-psUohH8";
 
 
-const supabaseClient = supabase.createClient(
+const supa =
+supabase.createClient(
     supabaseUrl,
     supabaseKey
 );
 
 
 
-// ================================
-// USUÁRIO ATUAL
-// ================================
-
-async function getUser(){
-
-    const { data } = await supabaseClient.auth.getUser();
-
-    return data.user;
-
-}
+console.log(
+    "RETRONETT Supabase Online!"
+);
 
 
 
-// ================================
-// CRIAR CONTA
-// ================================
-
-async function registerUser(email, password, username){
+// ===============================
+// AUTH
+// ===============================
 
 
-    const { data, error } = await supabaseClient.auth.signUp({
+// Criar conta
+
+async function criarConta(
+    email,
+    senha,
+    username
+){
+
+    const {data,error} =
+    await supa.auth.signUp({
 
         email: email,
 
-        password: password
+        password: senha
 
     });
 
@@ -57,20 +60,21 @@ async function registerUser(email, password, username){
     if(error){
 
         alert(error.message);
-
         return;
 
     }
 
 
 
-    await supabaseClient
+    await supa
     .from("profiles")
     .insert({
 
-        id: data.user.id,
+        id:data.user.id,
 
-        username: username
+        username:username,
+
+        admin:false
 
     });
 
@@ -80,23 +84,24 @@ async function registerUser(email, password, username){
         "Conta criada!"
     );
 
-
 }
 
 
 
-// ================================
-// LOGIN
-// ================================
 
-async function loginUser(email, password){
+// Login
 
+async function login(
+    email,
+    senha
+){
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
+    const {data,error} =
+    await supa.auth.signInWithPassword({
 
-        email: email,
+        email:email,
 
-        password: password
+        password:senha
 
     });
 
@@ -105,7 +110,7 @@ async function loginUser(email, password){
     if(error){
 
         alert(
-            "Email ou senha incorretos!"
+            "Email ou senha errados!"
         );
 
         return false;
@@ -116,71 +121,98 @@ async function loginUser(email, password){
 
     return true;
 
+}
+
+
+
+
+// Logout
+
+async function sair(){
+
+    await supa.auth.signOut();
 
 }
 
 
 
-// ================================
-// LOGOUT
-// ================================
 
-async function logoutUser(){
+// Usuário atual
+
+async function usuarioAtual(){
+
+    const {data} =
+    await supa.auth.getUser();
 
 
-    await supabaseClient.auth.signOut();
-
+    return data.user;
 
 }
 
 
 
-// ================================
-// PEGAR PERFIL
-// ================================
 
-async function getProfile(){
-
-
-    const user = await getUser();
+// ===============================
+// PERFIL
+// ===============================
 
 
+async function pegarPerfil(){
 
-    if(!user){
 
+    const user =
+    await usuarioAtual();
+
+
+
+    if(!user)
         return null;
 
-    }
 
 
-
-    const { data } = await supabaseClient
+    const {data,error} =
+    await supa
 
     .from("profiles")
 
     .select("*")
 
-    .eq("id", user.id)
+    .eq(
+        "id",
+        user.id
+    )
 
     .single();
 
 
 
-    return data;
+    if(error)
+        return null;
 
+
+    return data;
 
 }
 
 
 
-// ================================
-// CRIAR POST
-// ================================
-
-async function createPost(title, content){
+// ===============================
+// BLOG
+// ===============================
 
 
-    const user = await getUser();
+
+// Criar post
+
+async function criarPost(
+    titulo,
+    texto
+){
+
+
+    const user =
+    await usuarioAtual();
+
 
 
     if(!user){
@@ -195,46 +227,50 @@ async function createPost(title, content){
 
 
 
-    await supabaseClient
-
+    const {error} =
+    await supa
     .from("posts")
-
     .insert({
 
-        title:title,
+        title:titulo,
 
-        content:content,
+        content:texto,
 
         author:user.id
 
     });
 
 
+
+    if(error)
+        console.log(error);
+
 }
 
 
 
-// ================================
-// PEGAR POSTS
-// ================================
+// Buscar posts
 
-async function loadPosts(){
+async function pegarPosts(){
 
 
-    const { data, error } = await supabaseClient
+    const {data,error} =
+    await supa
 
     .from("posts")
 
-    .select("*")
+    .select(`
+
+        *
+
+    `)
 
     .order(
 
         "created_at",
 
         {
-
             ascending:false
-
         }
 
     );
@@ -253,35 +289,53 @@ async function loadPosts(){
 
     return data;
 
+}
+
+
+
+// Apagar post
+
+async function apagarPost(id){
+
+
+    await supa
+
+    .from("posts")
+
+    .delete()
+
+    .eq(
+        "id",
+        id
+    );
 
 }
 
 
 
-// ================================
-// CRIAR COMENTÁRIO
-// ================================
-
-async function createComment(postId,text){
-
-
-    const user = await getUser();
+// ===============================
+// COMENTÁRIOS
+// ===============================
 
 
 
-    if(!user){
+async function criarComentario(
+    postId,
+    texto
+){
 
-        alert(
-            "Faça login!"
-        );
 
+    const user =
+    await usuarioAtual();
+
+
+
+    if(!user)
         return;
 
-    }
 
 
-
-    await supabaseClient
+    await supa
 
     .from("comments")
 
@@ -291,7 +345,7 @@ async function createComment(postId,text){
 
         author:user.id,
 
-        text:text
+        text:texto
 
     });
 
@@ -300,14 +354,14 @@ async function createComment(postId,text){
 
 
 
-// ================================
-// PEGAR COMENTÁRIOS
-// ================================
 
-async function loadComments(postId){
+async function pegarComentarios(
+    postId
+){
 
 
-    const { data } = await supabaseClient
+    const {data,error} =
+    await supa
 
     .from("comments")
 
@@ -326,21 +380,67 @@ async function loadComments(postId){
         "created_at",
 
         {
-
             ascending:true
-
         }
 
     );
 
 
 
-    return data;
+    if(error)
+        return [];
 
+
+    return data;
 
 }
 
 
-console.log(
-    "SUPA.JS conectado!"
-);
+
+
+// ===============================
+// REALTIME
+// ===============================
+
+
+function ativarRealtime(){
+
+
+    supa
+
+    .channel(
+        "posts"
+    )
+
+    .on(
+
+        "postgres_changes",
+
+        {
+
+            event:"*",
+
+            schema:"public",
+
+            table:"posts"
+
+        },
+
+
+        (payload)=>{
+
+
+            console.log(
+                "Mudança:",
+                payload
+            );
+
+
+        }
+
+    )
+
+    .subscribe();
+
+
+}
