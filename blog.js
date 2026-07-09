@@ -142,7 +142,7 @@ function renderPosts(){
         Enviar
 
         </button>
-
+        ${renderAdminButtons(post)}
         </div>
 
         `;
