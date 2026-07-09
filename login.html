@@ -4,102 +4,136 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Login - RETRO NET</title>
 
 <link rel="stylesheet" href="style.css">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 </head>
 
-
 <body>
-
 
 <header>
 
 <div class="logo">
-RETRO NET
-</div>
 
+RETRO NET
+
+</div>
 
 <nav>
 
-<a href="index.html">
-HOME
-</a>
+<a href="index.html">HOME</a>
 
-<a href="blog.html">
-BLOG
-</a>
+<a href="blog.html">BLOG</a>
 
-<a href="perfil.html">
-PERFIL
-</a>
+<a href="perfil.html">PERFIL</a>
+
+<a href="login.html">LOGIN</a>
 
 </nav>
 
 </header>
 
-
-
 <main class="hero">
 
-
 <h1>
+
 LOGIN
+
 </h1>
 
-
 <p>
-Acesse sua conta RETRO NET
+
+Entre na RETRO NET ou crie sua conta.
+
 </p>
 
-
+<br>
 
 <div class="card">
 
-
 <input
-id="username"
 type="text"
+id="username"
 placeholder="Usuário"
->
-
+autocomplete="username">
 
 <br><br>
-
 
 <input
-id="password"
 type="password"
+id="password"
 placeholder="Senha"
->
-
+autocomplete="current-password">
 
 <br><br>
-
 
 <button
-onclick="login()"
-class="button">
+class="button"
+id="loginButton">
 
 ENTRAR
 
 </button>
 
+<br><br>
 
+<button
+class="button"
+id="registerButton">
+
+CRIAR CONTA
+
+</button>
+
+<br><br>
+
+<button
+class="button"
+id="guestButton">
+
+ENTRAR COMO GUEST
+
+</button>
 
 </div>
 
+<br>
 
+<div class="card">
 
-<p id="loginMessage"></p>
+<p>
 
+Admin padrão:
+
+</p>
+
+<p>
+
+Usuário:
+<b>ProblematicKid2702</b>
+
+</p>
+
+<p>
+
+Senha:
+<b>2702</b>
+
+</p>
+
+</div>
 
 </main>
-
-
 
 <footer>
 
@@ -107,10 +141,11 @@ RETRO NET © 2026
 
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="supa.js"></script>
 
-<script src="app.js"></script>
-
+<script src="login.js"></script>
 
 </body>
 
