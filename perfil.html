@@ -5,53 +5,151 @@
 
 <meta charset="UTF-8">
 
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 <title>Perfil - RETRO NET</title>
 
 <link rel="stylesheet" href="style.css">
 
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+rel="stylesheet">
+
 </head>
 
-
 <body>
-
 
 <header>
 
 <div class="logo">
+
 RETRO NET
+
 </div>
 
 <nav>
 
-<a href="index.html">HOME</a>
-<a href="blog.html">BLOG</a>
-<a href="perfil.html">PERFIL</a>
+<a href="index.html">
+
+HOME
+
+</a>
+
+<a href="blog.html">
+
+BLOG
+
+</a>
+
+<a href="perfil.html">
+
+PERFIL
+
+</a>
+
+<a href="login.html">
+
+LOGIN
+
+</a>
 
 </nav>
 
 </header>
 
 
+
 <main class="hero">
 
-
 <h1>
-MEU PERFIL
+
+PERFIL
+
 </h1>
 
+<p>
 
-<div id="profile">
+Gerencie suas informações.
 
-Carregando...
+</p>
+
+<br>
+
+
+
+<div
+id="profile"
+
+class="card">
+
+Carregando perfil...
 
 </div>
 
+<br>
+
+
+
+<div class="card">
+
+<h2>
+
+AÇÕES
+
+</h2>
+
+<button
+
+class="button"
+
+onclick="editBio()"
+
+>
+
+EDITAR BIO
+
+</button>
+
+<br><br>
+
+<button
+
+class="button"
+
+onclick="logout()"
+
+>
+
+SAIR
+
+</button>
+
+</div>
 
 </main>
 
 
-<script src="app.js"></script>
 
+<footer>
+
+RETRO NET © 2026
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supa.js"></script>
+
+<script src="app.js"></script>
 
 </body>
 
