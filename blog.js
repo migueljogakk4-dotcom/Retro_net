@@ -13,7 +13,26 @@ let posts = [];
 // ==========================
 
 async function loadPosts(){
+    alert("1 - entrou no loadPosts");
 
+    const { data, error } = await supa
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    alert("2 - consulta terminou");
+
+    if (error) {
+        alert("ERRO: " + error.message);
+        return;
+    }
+
+    alert("3 - chamando renderPosts");
+
+    renderPosts(data);
+
+    alert("4 - terminou");
+}
     const container = document.getElementById("posts");
 
     if(!container) return;
