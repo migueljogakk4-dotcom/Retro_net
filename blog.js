@@ -112,18 +112,46 @@ function renderPosts(){
 
             <br><br>
 
-            <div id="comments-${post.id}"></div>
+      <button onclick="toggleComments('${post.id}')">
+    💬 Comentários
+</button>
 
-            <input
-                id="comment-${post.id}"
-                placeholder="Comentário..."
-            >
+<div
+    id="commentsBox-${post.id}"
+    style="display:none;"
+>
 
-            <button onclick="addComment('${post.id}')">
-                Enviar
-            </button>
+    <div id="comments-${post.id}"></div>
 
-        </div>
+    <input
+        id="comment-${post.id}"
+        placeholder="Comentário..."
+    >
+
+    <button onclick="addComment('${post.id}')">
+        Enviar
+    </button>
+
+</div>
+
+function toggleComments(postId){
+
+    const box =
+        document.getElementById(`commentsBox-${postId}`);
+
+    if(box.style.display==="none"){
+
+        box.style.display="block";
+
+        loadComments(postId);
+
+    }else{
+
+        box.style.display="none";
+
+    }
+
+}
 
         `;
 
