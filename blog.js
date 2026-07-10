@@ -461,12 +461,4 @@ async function deletePost(postId){
 // ATUALIZAR POSTS
 // ==========================
 
-setInterval(()=>{
-
-    if(document.getElementById("posts")){
-
-        loadPosts();
-
-    }
-
-},5000);
+// apaguei tudo LOL
