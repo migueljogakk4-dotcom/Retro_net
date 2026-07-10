@@ -375,3 +375,98 @@ async function addComment(postId){
 }
 
 
+// ==========================
+// VERIFICAR ADMIN
+// ==========================
+
+async function isAdmin(){
+
+    const { data:userData } =
+        await supa.auth.getUser();
+
+    if(!userData.user) return false;
+
+    const { data } = await supa
+        .from("profiles")
+        .select("admin")
+        .eq("id",userData.user.id)
+        .single();
+
+    return data?.admin === true;
+
+}
+
+
+
+// ==========================
+// BOTÃO ADMIN
+// ==========================
+
+async function renderAdminButtons(post){
+
+    if(!(await isAdmin())){
+
+        return "";
+
+    }
+
+    return `
+
+    <br><br>
+
+    <button onclick="deletePost('${post.id}')">
+
+    🗑️ Apagar Post
+
+    </button>
+
+    `;
+
+}
+
+
+
+// ==========================
+// APAGAR POST
+// ==========================
+
+async function deletePost(postId){
+
+    if(!confirm("Apagar este post?")){
+
+        return;
+
+    }
+
+    const { error } = await supa
+        .from("posts")
+        .delete()
+        .eq("id",postId);
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    loadPosts();
+
+}
+
+
+
+// ==========================
+// ATUALIZAR POSTS
+// ==========================
+
+setInterval(()=>{
+
+    if(document.getElementById("posts")){
+
+        loadPosts();
+
+    }
+
+},5000);
