@@ -186,3 +186,135 @@ box.style.display = "none";
 
 }
 
+async function loadComments(postId){
+
+const container =
+document.getElementById(
+"comments-" + postId
+);
+
+if(!container) return;
+
+const { data, error } = await supa
+.from("comments")
+.select("*")
+.eq("post_id", postId)
+.order("created_at", { ascending:true });
+
+if(error){
+
+container.innerHTML =
+"Erro ao carregar comentários.";
+
+console.error(error);
+
+return;
+
+}
+
+container.innerHTML = "";
+
+if(data.length === 0){
+
+container.innerHTML =
+"Nenhum comentário.";
+
+return;
+
+}
+
+data.forEach(comment=>{
+
+container.innerHTML +=
+
+"<p>" +
+"<b>" +
+(comment.author || "Usuário") +
+"</b>" +
+"<br>" +
+comment.text +
+"</p>" +
+"<hr>";
+
+});
+
+}
+
+async function addComment(postId){
+
+const input =
+document.getElementById(
+"comment-" + postId
+);
+
+const text =
+input.value.trim();
+
+if(text === "") return;
+
+const { data:userData } =
+await supa.auth.getUser();
+
+if(!userData.user){
+
+alert("Faça login.");
+
+return;
+
+}
+
+const { error } = await supa
+.from("comments")
+.insert({
+
+post_id:postId,
+
+author:userData.user.id,
+
+text:text
+
+});
+
+if(error){
+
+alert(error.message);
+
+console.error(error);
+
+return;
+
+}
+
+input.value = "";
+
+loadComments(postId);
+
+}
+
+async function deletePost(postId){
+
+const { error } = await supa
+.from("posts")
+.delete()
+.eq("id", postId);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+loadPosts();
+
+}
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+loadPosts();
+
+}
+);
