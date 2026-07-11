@@ -75,3 +75,114 @@ container.innerHTML += `
 });
 
 }
+
+async function createPost(){
+
+const title =
+document.getElementById("postTitle").value.trim();
+
+const content =
+document.getElementById("postText").value.trim();
+
+if(title === "" || content === ""){
+
+alert("Preencha todos os campos.");
+
+return;
+
+}
+
+const { data:userData } = await supa.auth.getUser();
+
+if(!userData.user){
+
+alert("Você precisa estar logado.");
+
+return;
+
+}
+
+const { error } = await supa
+.from("posts")
+.insert({
+
+title:title,
+
+content:content,
+
+author:userData.user.id,
+
+likes:0
+
+});
+
+if(error){
+
+alert(error.message);
+
+console.error(error);
+
+return;
+
+}
+
+document.getElementById("postTitle").value = "";
+
+document.getElementById("postText").value = "";
+
+loadPosts();
+
+}
+
+async function likePost(postId){
+
+const post = posts.find(
+p => p.id === postId
+);
+
+if(!post) return;
+
+const { error } = await supa
+.from("posts")
+.update({
+
+likes:(post.likes || 0) + 1
+
+})
+.eq("id", postId);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+loadPosts();
+
+}
+
+function toggleComments(postId){
+
+const box =
+document.getElementById(
+"commentsBox-" + postId
+);
+
+if(!box) return;
+
+if(box.style.display === "none"){
+
+box.style.display = "block";
+
+loadComments(postId);
+
+}else{
+
+box.style.display = "none";
+
+}
+
+}
+
