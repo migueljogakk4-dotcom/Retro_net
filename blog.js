@@ -210,6 +210,7 @@ return;
 
 }
 
+alert(JSON.stringify(data));
 container.innerHTML = "";
 
 if(data.length === 0){
