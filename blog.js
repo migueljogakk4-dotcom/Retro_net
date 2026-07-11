@@ -4,8 +4,8 @@
 
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-
-alert("blog.js carregou!");
+alert("BLOG.JS V3");
+throw new Error("PAREI AQUI");
 
 let posts = [];
 
