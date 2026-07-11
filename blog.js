@@ -1,6 +1,5 @@
 // BLOG.JS V3C 
 
-
 alert("RetroNet blog.js V3C carregado!");
 
 let posts = [];
