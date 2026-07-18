@@ -1,84 +1,96 @@
-/*
-RETRO NET
-BLOG.JS V3
-PARTE 1
-*/
-
-alert("blog.js carregou!");
-
 let posts = [];
 
-// ==========================
-// ABRIR / FECHAR COMENTÁRIOS
-// ==========================
+const postsContainer = document.getElementById("posts");
+const titleInput = document.getElementById("postTitle");
+const textInput = document.getElementById("postText");
 
-function toggleComments(postId){
-
-const box =
-    document.getElementById(`commentsBox-${postId}`);
-
-if(!box) return;
-
-if(box.style.display === "none"){
-
-    box.style.display = "block";
-
-    loadComments(postId);
-
-}else{
-
-    box.style.display = "none";
-
-}
+function escapeHtml(text) {
+if (text === null || text === undefined) {
+return "";
 }
 
-// ==========================
-// CARREGAR POSTS
-// ==========================
+return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
-async function loadPosts(){
+async function getCurrentUserId() {
+const {
+data,
+error
+} = await supa.auth.getUser();
 
-const container =
-    document.getElementById("posts");
+if (error || !data.user) {
+    return null;
+}
 
-if(!container) return;
+return data.user.id;
+}
 
-container.innerHTML = `
-    <div class="card">
-        Carregando posts...
-    </div>
-`;
+async function createPost() {
+const title = titleInput.value.trim();
+const content = textInput.value.trim();
 
-const { data, error } = await supa
+if (!title || !content) {
+    alert("Preencha o título e o conteúdo.");
+    return;
+}
+
+const userId = await getCurrentUserId();
+
+if (!userId) {
+    alert("Faça login para publicar.");
+    return;
+}
+
+const {
+    error
+} = await supa
     .from("posts")
-    .select(`
-        id,
+    .insert({
+        author: userId,
         title,
         content,
-        likes,
-        created_at,
-        author,
-        profiles (
-            username
-        )
-    `)
-    .order("created_at",{
-        ascending:false
+        likes: 0
     });
 
-if(error){
+if (error) {
+    alert(error.message);
+    return;
+}
 
-    console.error(error);
+titleInput.value = "";
+textInput.value = "";
 
-    container.innerHTML = `
+await loadPosts();
+}
+
+async function loadPosts() {
+postsContainer.innerHTML = <div class="card"> Carregando posts... </div>;
+
+const {
+    data,
+    error
+} = await supa
+    .from("posts")
+    .select(`
+        *,
+        profiles(username)
+    `)
+    .order("created_at", {
+        ascending: false
+    });
+
+if (error) {
+    postsContainer.innerHTML = `
         <div class="card">
-            <h2>Erro ao carregar posts</h2>
-            <p>${error.message}</p>
+            Erro ao carregar posts.
         </div>
     `;
-
     return;
-
 }
 
 posts = data || [];
@@ -86,86 +98,72 @@ posts = data || [];
 renderPosts();
 }
 
-// ==========================
-// MOSTRAR POSTS
-// ==========================
-
-function renderPosts(){
-
-const container =
-    document.getElementById("posts");
-
-if(!container) return;
-
-container.innerHTML = "";
-
-if(posts.length === 0){
-
-    container.innerHTML = `
-        <div class="card">
-            Nenhum post ainda.
-        </div>
-    `;
-
-    return;
-
+function renderPosts() {
+if (posts.length === 0) {
+postsContainer.innerHTML = <div class="card"> Nenhum post encontrado. </div>;
+return;
 }
 
-posts.forEach(post=>{
+let html = "";
 
+for (const post of posts) {
     const username =
         post.profiles?.username ||
         "Usuário";
 
-    container.innerHTML += `
+    const date = new Date(
+        post.created_at
+    ).toLocaleString("pt-BR");
 
-    <div class="card">
+    html += `
+        <div class="card">
 
-        <h2>${post.title}</h2>
+            <h2>
+                ${escapeHtml(post.title)}
+            </h2>
 
-        <p>${post.content}</p>
+            <p>
+                <strong>
+                    ${escapeHtml(username)}
+                </strong>
+            </p>
 
-        <small>
-            👤 ${username}
-        </small>
+            <small>
+                ${date}
+            </small>
 
-        <br><br>
+            <br><br>
 
-        <button onclick="likePost('${post.id}')">
-            ❤️ ${post.likes || 0}
-        </button>
-
-        <br><br>
-
-        <button onclick="toggleComments('${post.id}')">
-            💬 Comentários
-        </button>
-
-        <div
-            id="commentsBox-${post.id}"
-            style="display:none;"
-        >
+            <p>
+                ${escapeHtml(post.content)}
+            </p>
 
             <br>
 
-            <div id="comments-${post.id}"></div>
-
-            <input
-                id="comment-${post.id}"
-                placeholder="Comentário..."
+            <button
+                class="button"
+                onclick="likePost(${post.id})"
             >
+                ❤ ${post.likes || 0}
+            </button>
 
             <button
-                onclick="addComment('${post.id}')"
+                class="button"
+                onclick="toggleComments(${post.id})"
             >
-                Enviar
+                💬 Comentários
             </button>
+
+            <div
+                id="comments-${post.id}"
+                style="display:none;margin-top:20px;"
+            ></div>
 
         </div>
 
-    </div>
-
+        <br>
     `;
+}
 
-});
+postsContainer.innerHTML = html;
 }
