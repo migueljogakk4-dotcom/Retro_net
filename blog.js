@@ -302,3 +302,55 @@ html += `
 
 container.innerHTML = html;
 }
+
+
+async function addComment(postId) {
+    const input = document.getElementById(`commentText-${postId}`);
+
+    if (!input) {
+        return;
+    }
+
+    const text = input.value.trim();
+
+    if (!text) {
+        alert("Digite um comentário.");
+        return;
+    }
+
+    const userId = await getCurrentUserId();
+
+    if (!userId) {
+        alert("Faça login para comentar.");
+        return;
+    }
+
+    const { error } = await supa
+        .from("comments")
+        .insert({
+            post_id: postId,
+            author: userId,
+            text: text
+        });
+
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    input.value = "";
+
+    await loadComments(postId);
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+    await loadPosts();
+});
+
+window.createPost = createPost;
+window.loadPosts = loadPosts;
+window.renderPosts = renderPosts;
+window.toggleComments = toggleComments;
+window.loadComments = loadComments;
+window.addComment = addComment;
+window.likePost = likePost;
